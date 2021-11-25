@@ -1,7 +1,7 @@
 import sqlite3 as sql
 
-DB_PATH = "C:\\Users\\jilbe\\Desktop\\Python\\STREAMERSAPI\\database\\streamers.db"
 
+DB_PATH = "C:\\Users\\jilbe\\Desktop\\Python\\STREAMERSAPI\\database\\streamers.db"
 
 def createDB():
     conn = sql.connect(DB_PATH)

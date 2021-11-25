@@ -1,10 +1,12 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, url_for, redirect
+from forms import UserForm
 from Models import db, Streamers
 from logging import exception
-
+from config import config
 
 
 app = Flask(__name__, static_url_path="/static")
+app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database\\streamers.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
@@ -63,6 +65,11 @@ def getStreamer():
         exception("[SERVER]: Error ->")
         return jsonify({"msg": "Ha ocurrido un error"}), 500
 
+#Para otra fuente de datos
+@app.route("/adduser/")
+def useradd():
+   form = UserForm()
+   return render_template('adduser.html', title = 'User Input Form', form = form)
 
 if __name__ == "__main__":
     app.run(debug=True, port=4000)
