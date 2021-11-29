@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template, url_for, redirect
-from forms import UserForm
+from forms import UserForm, User
 from Models import db, Streamers
-from logging import exception
+from logging import NullHandler, exception
 from config import config
 
 
@@ -66,9 +66,21 @@ def getStreamer():
         return jsonify({"msg": "Ha ocurrido un error"}), 500
 
 #Para otra fuente de datos
-@app.route("/adduser/")
+@app.route("/adduser/", methods=['GET', 'POST'])
 def useradd():
    form = UserForm()
+   if request.method == 'POST':
+       fname=form.fname.data
+       lname=form.lname.data
+       email=form.email.data
+       user = NullHandler
+       try:
+           db.session.add(user)
+           db.session.commit()
+       except Exception:
+           db.session.rollback()
+       print('cuerco') 
+       return render_template('adduser_confirmation.html', title = 'Add User Confirmation', username=form.fname.data)
    return render_template('adduser.html', title = 'User Input Form', form = form)
 
 if __name__ == "__main__":
